@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  name: de-polizei-brandenburg
+  version: 0.1.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/de-polizei-brandenburg-${{ version }}.tar.gz
+  sha256: 9c3716d9682b20c939872d508416972b4df107542fdce727cd48d3c1cc7a4861
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - poetry
+  run:
+    - python >=${{ python_min }}
+    - python-dateutil
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - deutschland.polizei_brandenburg
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+
+about:
+  summary: "Polizei Brandenburg: App"
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://github.com/bundesAPI/polizei-brandenburg-api
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
